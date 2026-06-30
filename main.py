@@ -44,6 +44,19 @@ class House(Building):
         print(f"{self.name} provides upto {self.capacity} citizens")
         return None
     
-home = House("Maple Street House", 20, 4)
-home.display()
-home.produce()
+class Factory(Building):
+    def __init__(self, name, maintenance_cost, output_amount):
+        super().__init__(name, maintenance_cost)
+        self.output_amount = output_amount
+
+    def produce(self):
+        return Resource("Money", self.output_amount)
+    
+    def display(self):
+        super().display()
+        print(f"Output Amount: {self.output_amount}")
+
+factory = Factory("Steel Factory", 50, 200)
+factory.display()
+result = factory.produce()
+print(result)
