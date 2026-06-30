@@ -1,3 +1,5 @@
+from abc import ABC, abstractmethod
+
 class Resource:
     def __init__(self, name, amount):
         self.name = name
@@ -18,10 +20,30 @@ class Resource:
         print(f"{self.name}: {self.amount}")
 
 
-power = Resource("Power", 200)
-money = Resource("Money", 5000)
-power2 = Resource("Power",300)
+# power = Resource("Power", 200)
+# money = Resource("Money", 5000)
 
-power3 = power+power2
-print(power3)
-print(power)
+class Building(ABC):
+    def __init__(self,name, maintenance_cost):
+        self.name = name
+        self.maintenance_cost = maintenance_cost
+
+    @abstractmethod
+    def produce(self):
+        pass
+    
+    def display(self):
+        print(f"Building Name: {self.name}\nMaintenance Cost: {self.maintenance_cost}")
+    
+class House(Building):
+    def __init__(self, name, maintenance_cost,capacity):
+        super().__init__(name, maintenance_cost)
+        self.capacity = capacity
+    
+    def produce(self):
+        print(f"{self.name} provides upto {self.capacity} citizens")
+        return None
+    
+home = House("Maple Street House", 20, 4)
+home.display()
+home.produce()
