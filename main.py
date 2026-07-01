@@ -42,11 +42,25 @@ class House(Building):
     def __init__(self, name, maintenance_cost, capacity):
         super().__init__(name, maintenance_cost)
         self.capacity = capacity
+        self.residents = []
 
     def produce(self):
         print(f"{self.name} provides upto {self.capacity} citizens")
         return None
 
+    def add_resident(self,citizen):
+        if not len(self.residents)<self.capacity:
+            print("This house is already full!")
+            return
+        self.residents.append(citizen)
+        print("Citizen added successfully!")
+
+    def list_residents(self):
+        if not self.residents:
+            print("This house is empty! No one lives here.")
+            return
+        for count,citizen in enumerate(self.residents):
+            print(f"{count+1}. {citizen.name}")
 
 class Factory(Building):
     def __init__(self, name, maintenance_cost, output_amount):
@@ -96,3 +110,9 @@ class Citizen:
         print(
             f"Name: {self.name}\nSavings: {self.savings}\nHappiness: {self.happiness}"
         )
+
+home = House("Maple Street", maintenance_cost=20, capacity=2)
+home.add_resident(Citizen("John", 300, 70))
+home.add_resident(Citizen("Jane", 500, 80))
+home.add_resident(Citizen("Bob", 200, 60))  # should be rejected
+home.list_residents()
