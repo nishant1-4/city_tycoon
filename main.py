@@ -48,8 +48,8 @@ class House(Building):
         print(f"{self.name} provides upto {self.capacity} citizens")
         return None
 
-    def add_resident(self,citizen):
-        if not len(self.residents)<self.capacity:
+    def add_resident(self, citizen):
+        if not len(self.residents) < self.capacity:
             print("This house is already full!")
             return
         self.residents.append(citizen)
@@ -59,8 +59,9 @@ class House(Building):
         if not self.residents:
             print("This house is empty! No one lives here.")
             return
-        for count,citizen in enumerate(self.residents):
+        for count, citizen in enumerate(self.residents):
             print(f"{count+1}. {citizen.name}")
+
 
 class Factory(Building):
     def __init__(self, name, maintenance_cost, output_amount):
@@ -89,10 +90,17 @@ class PowerPlant(Building):
 
 
 class Citizen:
+    count_id = 1
+
     def __init__(self, name, savings, happiness):
         self.name = name
         self.savings = savings
         self.happiness = happiness
+        self.__citizen_id = Citizen.count_id
+        Citizen.count_id += 1
+
+    def get_id(self):
+        return self.__citizen_id
 
     def earn(self, amount):
         if amount <= 0:
@@ -103,28 +111,39 @@ class Citizen:
     def pay_tax(self, amount):
         if self.savings < amount:
             print("Not enough savings!")
-            return
+            return False
         self.savings -= amount
+        return True
 
     def display(self):
         print(
-            f"Name: {self.name}\nSavings: {self.savings}\nHappiness: {self.happiness}"
+            f"Name: {self.name}\nSavings: {self.savings}\nHappiness: {self.happiness}\nCitizen ID- {self.__citizen_id}"
         )
 
+
 class City:
-    def __init__(self,name,treasury):
+    def __init__(self, name, treasury):
         self.name = name
-        self.__treasury = Resource("Money",treasury)
+        self.__treasury = Resource("Money", treasury)
         self.buildings = []
         self.citizens = []
+        self.tax_dues = []
 
-    def add_building(self,building):
+    def add_building(self, building):
         self.buildings.append(building)
         print(f"{building.name} constructed successfully!")
-    
-    def add_citizen(self,citizen):
+
+    def add_citizen(self, citizen):
         self.citizens.append(citizen)
         print("Citizen added successfully")
 
     def display(self):
         print(f"Name- {self.name}\nTreasury- {self.__treasury.amount}")
+
+    def collect_taxes(self, amount):
+        for citizen in self.citizens:
+            if citizen.pay_tax(amount):
+                self.__treasury.amount += amount
+            else:
+                self.tax_dues.append(citizen)
+
