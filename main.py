@@ -1,18 +1,19 @@
 from abc import ABC, abstractmethod
 
+
 class Resource:
     def __init__(self, name, amount):
         self.name = name
         self.amount = amount
 
     def __add__(self, other):
-        if not self.name==other.name:
+        if not self.name == other.name:
             return False
-        return Resource(self.name,self.amount+other.amount)
+        return Resource(self.name, self.amount + other.amount)
 
     def __eq__(self, other):
         return self.amount == other.amount and self.name == other.name
-    
+
     def __str__(self):
         return f"{self.name}: {self.amount}"
 
@@ -23,27 +24,30 @@ class Resource:
 # power = Resource("Power", 200)
 # money = Resource("Money", 5000)
 
+
 class Building(ABC):
-    def __init__(self,name, maintenance_cost):
+    def __init__(self, name, maintenance_cost):
         self.name = name
         self.maintenance_cost = maintenance_cost
 
     @abstractmethod
     def produce(self):
         pass
-    
+
     def display(self):
         print(f"Building Name: {self.name}\nMaintenance Cost: {self.maintenance_cost}")
-    
+
+
 class House(Building):
-    def __init__(self, name, maintenance_cost,capacity):
+    def __init__(self, name, maintenance_cost, capacity):
         super().__init__(name, maintenance_cost)
         self.capacity = capacity
-    
+
     def produce(self):
         print(f"{self.name} provides upto {self.capacity} citizens")
         return None
-    
+
+
 class Factory(Building):
     def __init__(self, name, maintenance_cost, output_amount):
         super().__init__(name, maintenance_cost)
@@ -51,10 +55,11 @@ class Factory(Building):
 
     def produce(self):
         return Resource("Money", self.output_amount)
-    
+
     def display(self):
         super().display()
         print(f"Output Amount: {self.output_amount}")
+
 
 class PowerPlant(Building):
     def __init__(self, name, maintenance_cost, power_output):
@@ -63,7 +68,31 @@ class PowerPlant(Building):
 
     def produce(self):
         return Resource("Power", self.power_output)
-    
+
     def display(self):
         super().display()
         print(f"Power Generated: {self.power_output}")
+
+
+class Citizen:
+    def __init__(self, name, savings, happiness):
+        self.name = name
+        self.savings = savings
+        self.happiness = happiness
+
+    def earn(self, amount):
+        if amount <= 0:
+            print("Earning should be greater than 0!")
+            return
+        self.savings += amount
+
+    def pay_tax(self, amount):
+        if self.savings < amount:
+            print("Not enough savings!")
+            return
+        self.savings -= amount
+
+    def display(self):
+        print(
+            f"Name: {self.name}\nSavings: {self.savings}\nHappiness: {self.happiness}"
+        )
