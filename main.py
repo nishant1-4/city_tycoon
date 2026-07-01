@@ -56,7 +56,14 @@ class Factory(Building):
         super().display()
         print(f"Output Amount: {self.output_amount}")
 
-factory = Factory("Steel Factory", 50, 200)
-factory.display()
-result = factory.produce()
-print(result)
+class PowerPlant(Building):
+    def __init__(self, name, maintenance_cost, power_output):
+        super().__init__(name, maintenance_cost)
+        self.power_output = power_output
+
+    def produce(self):
+        return Resource("Power", self.power_output)
+    
+    def display(self):
+        super().display()
+        print(f"Power Generated: {self.power_output}")
