@@ -111,8 +111,20 @@ class Citizen:
             f"Name: {self.name}\nSavings: {self.savings}\nHappiness: {self.happiness}"
         )
 
-home = House("Maple Street", maintenance_cost=20, capacity=2)
-home.add_resident(Citizen("John", 300, 70))
-home.add_resident(Citizen("Jane", 500, 80))
-home.add_resident(Citizen("Bob", 200, 60))  # should be rejected
-home.list_residents()
+class City:
+    def __init__(self,name,treasury):
+        self.name = name
+        self.__treasury = Resource("Money",treasury)
+        self.buildings = []
+        self.citizens = []
+
+    def add_building(self,building):
+        self.buildings.append(building)
+        print(f"{building.name} constructed successfully!")
+    
+    def add_citizen(self,citizen):
+        self.citizens.append(citizen)
+        print("Citizen added successfully")
+
+    def display(self):
+        print(f"Name- {self.name}\nTreasury- {self.__treasury.amount}")
